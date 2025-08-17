@@ -1,0 +1,13 @@
+* Guix Config
+
+** Channels
+
+#+BEGIN_SRC sh
+guix pull -C channels.scm
+#+END_SRC
+
+** Home
+
+#+BEGIN_SRC sh
+guix home reconfigure home.scm
+#+END_SRC
