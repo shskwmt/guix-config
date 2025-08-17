@@ -1,5 +1,7 @@
 ;; home.scm
 (use-modules (gnu home)
+	     (gnu home services)
+	     (gnu home services shells)
 	     (gnu packages)
              (gnu packages compression)  ; unzip
              (guix gexp)
@@ -53,10 +55,28 @@
           "font-google-noto-sans-cjk"
           "emacs-nerd-icons"
 
+	  "nss-certs"
 	  "git"
 	  "openssh"
 	  "emacs"
 	  "gcc-toolchain"
 	  "tree-sitter"
 	  "tree-sitter-cli"
-	  )))))
+	  ))))
+
+  (services
+    (list
+     (service home-bash-service-type
+	      (home-bash-configuration
+               (aliases '(("ll" . "ls -l")))
+               (bashrc
+		(list
+		 (plain-file "guix-bashrc"
+			     "export EDITOR=emacs
+GUIX_PROFILE=\"$(echo ~root)/.config/guix/current\"
+if [ -r \"$GUIX_PROFILE/etc/profile\" ]; then
+  . \"$GUIX_PROFILE/etc/profile\"
+fi
+guix-daemon --build-users-group=guixbuild &
+")))))))
+  )
